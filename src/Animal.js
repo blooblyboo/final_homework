@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 // note: your host/port number may be different!
-mongoose.connect('mongodb://localhost:27017/myDatabase');
+mongoose.connect('mongodb+srv://kirill_admin:nhjqrf-1874@cluster0-tehu4.mongodb.net/js_course');
 
 var Schema = mongoose.Schema;
 
