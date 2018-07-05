@@ -95,7 +95,38 @@ app.use('/animalsYoungerThan', (req, res) => {
             res.json(result);
         }
         else{
-            res.send.json({});
+            res.json({});
+        }
+    });
+});
+//calculatePrice
+app.use('/calculatePrice', (req, res) => {
+    var ids, qtys;
+
+    if(req.query.qty) { qtys = req.query.qty; }
+    if(req.query.id) { ids = req.query.id; }
+
+    var query = { id: ids };
+    Toy.find(query, (err, toys) => {
+        if(err){
+            res.type('html').status(500);
+            res.send('Error: ' + err);
+        }
+        else if(toys){
+            var result = { totalPrice: 0, items: [] };
+            var count = 0;
+            
+            toys.forEach(toy => {
+                result.totalPrice += toy.price * qtys[count];
+                item = { item: toy.id, qty: qtys[count], subtotal: toy.price * qtys[count] };
+                result.items.push(item);
+                count++;
+            });
+
+            res.json(result);
+        }
+        else{
+            res.json({});
         }
     });
 });
