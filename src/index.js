@@ -76,6 +76,25 @@ app.use('/findAnimals', (req, res) => {
         }
     }).sort({name: 'asc'});
 });
+//younger than
+app.use('/animalsYoungerThan', (req, res) => {
+    var condition;
+    if(req.query.age) { condition = {$lt: req.query.age}; }
+    var query = { age: condition };
+
+    Animal.find(query, (err, animals) => {
+        if(err) { 
+            res.type('html').status(500);
+            res.send('Error: ' + err);
+        }
+        else if(animals){
+            res.json(animals);
+        }
+        else{
+            res.send.json({});
+        }
+    });
+});
 
 app.use('/', (req, res) => {
         res.json({ msg : 'It works!' });
