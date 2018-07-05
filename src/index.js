@@ -88,7 +88,11 @@ app.use('/animalsYoungerThan', (req, res) => {
             res.send('Error: ' + err);
         }
         else if(animals){
-            res.json(animals);
+            let i = animals.length, result = {count: animals.length, names: []};
+            while(i--){
+                result.names.push(animals[i].name);
+            }
+            res.json(result);
         }
         else{
             res.send.json({});
