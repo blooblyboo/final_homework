@@ -24,7 +24,7 @@ app.use('/toyform', (req, res) => {
     });
 });
 //handle the creation of a toy
-app.use('/createtoy', (req, res) => {
+app.use('/cr eatetoy', (req, res) => {
     var newToy = new Toy(req.body);
     newToy.save( (err) => {
         if(err){
@@ -37,7 +37,7 @@ app.use('/createtoy', (req, res) => {
     } );
 });
 //find toy
-app.use('/findtoy', (req, res) => {
+app.use('/findToy', (req, res) => {
     var query = {id: req.query.id};
 
     Toy.find(query, (err, toys) => {
@@ -52,6 +52,29 @@ app.use('/findtoy', (req, res) => {
             res.json({});
         }
     }).sort({'id': 'asc'});
+});
+//find Animals
+app.use('/findAnimals', (req, res) => {
+    var terms = [];
+
+    if(req.query.species) { terms.push({ species: req.query.species }); }
+    if(req.query.trait) { terms.push({traits: req.query.trait}); }
+    if(req.query.gender) { terms.push({gender: req.query.gender}); }
+
+    var query = { $and: terms };
+    
+    Animal.find(query, (err, animals) => {
+        if(err){
+            res.type('html').status(500);
+            res.send('Error: ' + err);
+        }
+        else if(animals){
+            res.json(animals);
+        }
+        else{
+            res.json({});
+        }
+    }).sort({name: 'asc'});
 });
 
 app.use('/', (req, res) => {
