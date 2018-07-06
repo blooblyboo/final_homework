@@ -24,7 +24,7 @@ app.use('/toyform', (req, res) => {
     });
 });
 //handle the creation of a toy
-app.use('/cr eatetoy', (req, res) => {
+app.use('/createtoy', (req, res) => {
     var newToy = new Toy(req.body);
     newToy.save( (err) => {
         if(err){
@@ -40,7 +40,7 @@ app.use('/cr eatetoy', (req, res) => {
 app.use('/findToy', (req, res) => {
     var query = {id: req.query.id};
 
-    Toy.find(query, (err, toys) => {
+    Toy.find(query, {'_id': 0, '__v': 0}, (err, toys) => {
         if(err){
             res.type('html').status('500');
             res.write('No such id in DB');
@@ -63,7 +63,7 @@ app.use('/findAnimals', (req, res) => {
 
     var query = { $and: terms };
     
-    Animal.find(query, (err, animals) => {
+    Animal.find(query, {'_id': 0}, (err, animals) => {
         if(err){
             res.type('html').status(500);
             res.send('Error: ' + err);
